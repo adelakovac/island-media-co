@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f4f7f9;
+  --foreground: #0f2942;
+
+  /* Island Media Co brand palette - reused across client/manager/fitter UIs */
+  --color-brand-navy-950: #071a2c;
+  --color-brand-navy-900: #0f2942;
+  --color-brand-navy-800: #1c3f5f;
+  --color-brand-navy-700: #2b5578;
+  --color-brand-teal-600: #0d9488;
+  --color-brand-teal-500: #14b8a6;
+  --color-brand-teal-100: #ccfbf1;
+  --color-brand-bg: #f4f7f9;
+  --color-brand-amber-500: #d97706;
+  --color-brand-amber-100: #fef3c7;
+  --color-brand-red-600: #dc2626;
+  --color-brand-red-100: #fee2e2;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-brand-navy-950: var(--color-brand-navy-950);
+  --color-brand-navy-900: var(--color-brand-navy-900);
+  --color-brand-navy-800: var(--color-brand-navy-800);
+  --color-brand-navy-700: var(--color-brand-navy-700);
+  --color-brand-teal-600: var(--color-brand-teal-600);
+  --color-brand-teal-500: var(--color-brand-teal-500);
+  --color-brand-teal-100: var(--color-brand-teal-100);
+  --color-brand-bg: var(--color-brand-bg);
+  --color-brand-amber-500: var(--color-brand-amber-500);
+  --color-brand-amber-100: var(--color-brand-amber-100);
+  --color-brand-red-600: var(--color-brand-red-600);
+  --color-brand-red-100: var(--color-brand-red-100);
+}
+
+body {
+  background: var(--color-brand-bg);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}

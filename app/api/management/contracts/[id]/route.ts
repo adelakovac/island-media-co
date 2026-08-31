@@ -1,0 +1,28 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { ApiError, errorResponse } from "@/lib/http";
+import { requireActingUser } from "@/lib/acting-user";
+import { buildManagementContractDetail } from "@/lib/management-contract-detail";
+
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const actingUser = await requireActingUser(request);
+    if (actingUser.role !== "manager") {
+      throw new ApiError("FORBIDDEN", "Only manager users may view contract detail.");
+    }
+
+    const { id } = await params;
+    const contract = await prisma.contract.findUnique({ where: { id }, include: { items: true } });
+    if (!contract) {
+      throw new ApiError("NOT_FOUND", `Contract ${id} was not found.`);
+    }
+
+    return NextResponse.json(await buildManagementContractDetail(contract));
+  } catch (error) {
+    if (error instanceof ApiError) return errorResponse(error);
+    console.error(error);
+    return errorResponse(
+      new ApiError("SERVICE_UNAVAILABLE", "Please try again. The service is temporarily unavailable."),
+    );
+  }
+}
