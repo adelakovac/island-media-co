@@ -1,0 +1,401 @@
+// Production-only Prisma schema, used exclusively for the Vercel deployment
+// against Postgres (Neon). Local dev and the test suite use SQLite via
+// prisma/schema.prisma instead - see README's Setup section.
+//
+// Why this file exists: Prisma's datasource `provider` must be a literal
+// string ("sqlite" / "postgresql") - it cannot be driven by env(), so one
+// schema file can't serve both databases. This file is otherwise a
+// byte-for-byte copy of prisma/schema.prisma's models (JSON fields kept as
+// `String`, not `Json`, so the exact same application code and generated
+// Prisma Client types work unmodified against either database).
+//
+// IMPORTANT: if you change a model in prisma/schema.prisma, make the same
+// change here. There is no tooling enforcing this - it's a manual sync.
+//
+// Usage (only ever run against the production Neon database, never locally):
+//   npx prisma generate --schema=prisma/schema.production.prisma
+//   npx prisma db push --schema=prisma/schema.production.prisma
+// `db push` (not `migrate deploy`) is used deliberately: this schema has no
+// migrations directory of its own, since generating one requires a live
+// Postgres connection this project doesn't keep around locally. See
+// PRODUCTIONISATION.md for the tradeoff (no migration history/rollback).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // Neon's pooled connection (PgBouncer) doesn't support the DDL/advisory
+  // locks `db push`/`migrate` need; set this to Neon's direct (non-pooled)
+  // connection string. Optional if DATABASE_URL is already a direct
+  // connection, but Vercel's runtime queries should go through the pooler.
+  directUrl = env("DIRECT_URL")
+}
+
+// -----------------------------------------------------------------------
+// Reference data
+// -----------------------------------------------------------------------
+
+model MediaOwner {
+  id       String    @id @default(cuid())
+  name     String
+  products Product[]
+}
+
+model Location {
+  id             String         @id @default(cuid())
+  name           String
+  products       Product[]
+  assets         Asset[]
+  capacityPools  CapacityPool[]
+}
+
+model Organisation {
+  id              String           @id @default(cuid())
+  name            String
+  createdAt       DateTime
+  contractCount   Int              @default(0)
+  users           User[]
+  bookingRequests BookingRequest[]
+  contracts       Contract[]
+  campaigns       Campaign[]
+  workOrders      WorkOrder[]
+  serviceEvents   ServiceEvent[]
+  clientRequests  ClientRequest[]
+}
+
+model User {
+  id             String        @id @default(cuid())
+  name           String
+  email          String        @unique
+  role           String // client | manager | fitter
+  organisationId String?
+  organisation   Organisation? @relation(fields: [organisationId], references: [id])
+  status         String
+
+  assignedWorkOrders WorkOrder[]   @relation("AssignedFitter")
+  proofRecords       ProofRecord[]
+}
+
+// -----------------------------------------------------------------------
+// Catalogue
+// -----------------------------------------------------------------------
+
+model Product {
+  id           String     @id @default(cuid())
+  name         String
+  mediaOwnerId String
+  mediaOwner   MediaOwner @relation(fields: [mediaOwnerId], references: [id])
+  mediaType    String
+  locations    Location[]
+
+  allocationModel String // exclusive_asset | capacity_pool
+  description     String
+
+  // IndicativeRate, flattened (fixed shape, matches openapi IndicativeRate)
+  rateCurrency          String
+  rateAmount            Float?
+  rateUnit              String?
+  rateMonthlyEquivalent Float?
+  rateLabel             String
+
+  minimumTermDays Int
+
+  // Arbitrary/variable shape per product, matches openapi's
+  // `creativeSpec: { type: [object, 'null'], additionalProperties: true }`.
+  // Stored as a serialized JSON string, kept in sync with schema.prisma
+  // (SQLite has no native Json type, so both schemas use String here).
+  creativeSpec String?
+
+  capacityPool     CapacityPool?
+  assets           Asset[]
+  bookings         Booking[]
+  holds            Hold[]
+  bookingRequests  BookingRequest[]
+  contractItems    ContractItem[]
+}
+
+model Asset {
+  id                  String    @id @default(cuid())
+  productId           String
+  product             Product   @relation(fields: [productId], references: [id])
+  name                String
+  locationId          String
+  location            Location  @relation(fields: [locationId], references: [id])
+  status              String
+  verifiedAt          DateTime?
+  verificationSource  String?
+  note                String?
+
+  bookings          Booking[]
+  holds             Hold[]
+  outages           Outage[]
+  contractItems     ContractItem[]
+  workOrders        WorkOrder[]
+  requestedInRequests BookingRequest[]
+}
+
+model CapacityPool {
+  id                 String    @id @default(cuid())
+  productId          String    @unique
+  product            Product   @relation(fields: [productId], references: [id])
+  name               String
+  locationId         String
+  location           Location  @relation(fields: [locationId], references: [id])
+  capacity           Int
+  status             String
+  verifiedAt         DateTime?
+  verificationSource String?
+
+  bookings      Booking[]
+  holds         Hold[]
+  contractItems ContractItem[]
+}
+
+// -----------------------------------------------------------------------
+// Inventory usage (no dedicated openapi schema; shape taken from fixtures)
+// -----------------------------------------------------------------------
+
+model Booking {
+  id             String        @id @default(cuid())
+  campaignName   String
+  productId      String
+  product        Product       @relation(fields: [productId], references: [id])
+  assetId        String?
+  asset          Asset?        @relation(fields: [assetId], references: [id])
+  capacityPoolId String?
+  capacityPool   CapacityPool? @relation(fields: [capacityPoolId], references: [id])
+  capacityUnits  Int?
+  startDate      DateTime
+  endDate        DateTime
+  status         String
+
+  campaign Campaign?
+}
+
+model Hold {
+  id             String        @id @default(cuid())
+  productId      String
+  product        Product       @relation(fields: [productId], references: [id])
+  assetId        String?
+  asset          Asset?        @relation(fields: [assetId], references: [id])
+  capacityPoolId String?
+  capacityPool   CapacityPool? @relation(fields: [capacityPoolId], references: [id])
+  capacityUnits  Int?
+  startDate      DateTime
+  endDate        DateTime
+  expiresAt      DateTime
+  status         String
+}
+
+model Outage {
+  id        String   @id @default(cuid())
+  assetId   String
+  asset     Asset    @relation(fields: [assetId], references: [id])
+  startDate DateTime
+  endDate   DateTime
+  reason    String
+  status    String
+}
+
+// -----------------------------------------------------------------------
+// Booking requests
+// -----------------------------------------------------------------------
+
+model BookingRequest {
+  id             String       @id @default(cuid())
+  idempotencyKey String       @unique
+  organisationId String
+  organisation   Organisation @relation(fields: [organisationId], references: [id])
+
+  // Fixture-only advertiser contact snapshot, not part of the openapi
+  // BookingRequest schema (which derives organisationId from the acting
+  // user instead). Kept because it is present in the fixture data.
+  advertiserName        String
+  advertiserContactName String
+  advertiserEmail       String
+
+  productId         String
+  product           Product @relation(fields: [productId], references: [id])
+  requestedAssetId  String?
+  requestedAsset    Asset?  @relation(fields: [requestedAssetId], references: [id])
+  startDate         DateTime
+  endDate           DateTime
+  budget            Float
+  objective         String
+  notes             String?
+  status            String // submitted | information_required | approved | declined
+  createdAt         DateTime
+  draftContractId   String?  @unique
+
+  // Array<HistoryEntry> as given in the fixtures/openapi (no ids of its own).
+  // Serialized JSON string, kept in sync with schema.prisma.
+  history String
+
+  contract Contract?
+}
+
+// -----------------------------------------------------------------------
+// Contracts
+// -----------------------------------------------------------------------
+
+model Contract {
+  id               String         @id @default(cuid())
+  organisationId   String
+  organisation     Organisation   @relation(fields: [organisationId], references: [id])
+  bookingRequestId String?        @unique
+  bookingRequest   BookingRequest? @relation(fields: [bookingRequestId], references: [id])
+
+  status     String // draft | issued | change_requested | accepted | active | completed | cancelled
+  version    Int
+  startDate  DateTime
+  endDate    DateTime
+  currency   String // const GBP
+  total      Float
+  issuedAt   DateTime?
+  acceptedAt DateTime?
+  activatedAt DateTime?
+
+  // Serialized JSON string (Array<HistoryEntry>), kept in sync with schema.prisma.
+  history String
+
+  items          ContractItem[]
+  campaign       Campaign?
+  workOrders     WorkOrder[]
+  serviceEvents  ServiceEvent[]
+  clientRequests ClientRequest[]
+}
+
+model ContractItem {
+  id             String        @id @default(cuid())
+  contractId     String
+  contract       Contract      @relation(fields: [contractId], references: [id])
+  productId      String
+  product        Product       @relation(fields: [productId], references: [id])
+  assetId        String?
+  asset          Asset?        @relation(fields: [assetId], references: [id])
+  capacityPoolId String?
+  capacityPool   CapacityPool? @relation(fields: [capacityPoolId], references: [id])
+  quantity       Int
+  unitRate       Float?
+  rateUnit       String?
+  lineTotal      Float
+}
+
+// -----------------------------------------------------------------------
+// Campaigns, work orders, service history
+// -----------------------------------------------------------------------
+
+model Campaign {
+  id             String       @id @default(cuid())
+  organisationId String
+  organisation   Organisation @relation(fields: [organisationId], references: [id])
+  contractId     String?      @unique
+  contract       Contract?    @relation(fields: [contractId], references: [id])
+  bookingId      String?      @unique
+  booking        Booking?     @relation(fields: [bookingId], references: [id])
+  name           String
+  status         String
+  currentStage   String
+  clientVisible  Boolean
+
+  workOrders    WorkOrder[]
+  serviceEvents ServiceEvent[]
+}
+
+model WorkOrder {
+  id             String       @id @default(cuid())
+  campaignId     String
+  campaign       Campaign     @relation(fields: [campaignId], references: [id])
+  contractId     String
+  contract       Contract     @relation(fields: [contractId], references: [id])
+  organisationId String
+  organisation   Organisation @relation(fields: [organisationId], references: [id])
+
+  type           String // survey | production | installation | maintenance | removal
+  status         String // draft | assigned | travelling | on_site | blocked | completed | cancelled
+  assignedUserId String
+  assignedUser   User         @relation("AssignedFitter", fields: [assignedUserId], references: [id])
+  assetId        String
+  asset          Asset        @relation(fields: [assetId], references: [id])
+  scheduledStart DateTime
+  scheduledEnd   DateTime
+  locationLabel  String
+  instructions   String
+
+  // Present in fixtures but deliberately absent from the openapi WorkOrder
+  // schema returned to clients/fitters - internal-only.
+  internalNotes  String?
+  completionNote String?
+
+  // openapi's `proofRecordIds` is derived from `proofRecords` at read time
+  // rather than stored, to avoid two sources of truth.
+  // Serialized JSON string (Array<HistoryEntry>), kept in sync with schema.prisma.
+  history String
+
+  proofRecords  ProofRecord[]
+  serviceEvents ServiceEvent[]
+}
+
+model ServiceEvent {
+  id             String        @id @default(cuid())
+  organisationId String
+  organisation   Organisation  @relation(fields: [organisationId], references: [id])
+  contractId     String?
+  contract       Contract?     @relation(fields: [contractId], references: [id])
+  campaignId     String?
+  campaign       Campaign?     @relation(fields: [campaignId], references: [id])
+  workOrderId    String?
+  workOrder      WorkOrder?    @relation(fields: [workOrderId], references: [id])
+
+  at            DateTime
+  type          String
+  title         String
+  clientVisible Boolean
+  clientSummary String?
+}
+
+model ClientRequest {
+  id             String       @id @default(cuid())
+  organisationId String
+  organisation   Organisation @relation(fields: [organisationId], references: [id])
+  contractId     String?
+  contract       Contract?    @relation(fields: [contractId], references: [id])
+
+  type      String
+  status    String
+  createdAt DateTime
+  summary   String
+
+  // Serialized JSON string (Array<HistoryEntry>), kept in sync with schema.prisma.
+  history String
+}
+
+// Generic Idempotency-Key cache: caches a successful response body/status per
+// (key, scope) so a retried write with the same key returns the same result
+// instead of re-running the mutation. Only used where a single natural unique
+// business key isn't already available (see BookingRequest.idempotencyKey).
+model IdempotencyRecord {
+  id        String   @id @default(cuid())
+  key       String
+  scope     String
+  status    Int
+  body      String
+  createdAt DateTime @default(now())
+
+  @@unique([key, scope])
+}
+
+model ProofRecord {
+  id              String    @id @default(cuid())
+  workOrderId     String
+  workOrder       WorkOrder @relation(fields: [workOrderId], references: [id])
+  fileName        String
+  previewUrl      String?
+  completionNote  String
+  createdAt       DateTime
+  createdByUserId String
+  createdByUser   User      @relation(fields: [createdByUserId], references: [id])
+}

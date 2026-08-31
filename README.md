@@ -42,7 +42,7 @@ Protected routes expect an `X-Prototype-User-Id` header identifying the acting u
 ## Tech stack
 
 - Next.js 16 (App Router), React 19
-- Prisma 5 against SQLite (`dev.db` for local use, `test.db` for the test suite)
+- Prisma 5 against SQLite (`dev.db` for local use, `test.db` for the test suite) - deployed on Vercel against Postgres instead, see Deploying below
 - Tailwind CSS 4
 - Vitest for tests, tsx for running TypeScript scripts directly
 - TypeScript throughout, no separate backend process - API routes live in the same Next.js app
@@ -76,6 +76,23 @@ npm run test:watch
 Tests run against `prisma/test.db`, which is separate from the `dev.db` you use for manual testing - running the suite never touches your dev data. `tests/global-setup.ts` rebuilds the test database schema once before the whole run, and each test resets and reseeds it via `tests/helpers/reset-db.ts` (the same `seedFixtures` function the CLI seed script uses), so tests don't leak state into each other. Because tests share one SQLite file, the suite runs with `fileParallelism: false` in `vitest.config.mts` - tests are not safe to run concurrently.
 
 Coverage: access control, cross-org isolation, idempotency replay, the full connected booking-to-install journey, contract lifecycle, cancellation cascade, work order rules, and the availability engine's unit logic.
+
+## Deploying
+
+Local dev and tests stay on SQLite (above); the app deploys to Vercel against a hosted Postgres database (Neon) instead. This needs a second schema file, `prisma/schema.production.prisma`, because Prisma's datasource `provider` (`sqlite` vs `postgresql`) is a compile-time literal - it can't be switched with an env var, so one schema can't target both databases. That file is a manually-kept-in-sync copy of `prisma/schema.prisma`'s models (its header explains why and how); it deliberately keeps the JSON-as-string columns (`history`, `creativeSpec`, `IdempotencyRecord.body`) as `String` rather than Postgres's native `Json` type, so application code doesn't need to branch by environment.
+
+In Vercel's project settings:
+
+- Set `DATABASE_URL` to Neon's pooled connection string (the `-pooler` host) and `DIRECT_URL` to Neon's direct connection string (no `-pooler`) - only `DIRECT_URL` needs to support DDL/advisory locks, so pooled traffic still goes through `DATABASE_URL` at runtime. Set both there, not in a local `.env` - local dev doesn't use Postgres at all.
+- Override the Build Command to `npx prisma generate --schema=prisma/schema.production.prisma && next build`, so the deployed app's generated Prisma Client matches Postgres rather than the SQLite client `npm install`'s default `prisma generate` produces locally.
+
+Before the first deploy, sync the schema to that database once (from a machine that can reach it, with `DATABASE_URL`/`DIRECT_URL` set to the Neon values):
+
+```bash
+npx prisma db push --schema=prisma/schema.production.prisma
+```
+
+`db push` is used instead of `migrate deploy` because there's no migration history for the production schema yet - generating one needs a `prisma migrate dev` run against a live Postgres instance, which this project doesn't keep around locally (see PRODUCTIONISATION.md). That means no rollback/audit trail for production schema changes, which is fine for a prototype deploy but worth revisiting before this carries real traffic. This does not seed data - run `npm run seed` separately against the production `DATABASE_URL` if you want the fixtures loaded there too.
 
 ## Architectural decisions
 

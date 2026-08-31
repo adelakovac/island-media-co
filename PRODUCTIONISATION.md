@@ -27,15 +27,16 @@ What it needs instead:
 
 ## Database
 
-SQLite (`dev.db` / `test.db`) is fine for a single-process prototype but doesn't hold up under concurrent writers, has no real backup/replication story, and caps out on write throughput a lot sooner than the traffic this kind of platform would see.
+SQLite (`dev.db` / `test.db`) is fine for a single-process prototype but doesn't hold up under concurrent writers, has no real backup/replication story, and caps out on write throughput a lot sooner than the traffic this kind of platform would see. Local dev and the test suite still run on SQLite; the deployed app runs against Postgres (Neon) instead, via a separate `prisma/schema.production.prisma` (see README's Deploying section) - Prisma's datasource `provider` is a compile-time literal, so one schema file can't serve both databases, hence the second file. That production schema deliberately keeps the JSON-as-string columns (`history`, `creativeSpec`, `IdempotencyRecord.body`) as `String` rather than native Postgres `Json`, so the exact same application code runs unmodified against either database - real `Json` columns are a reasonable follow-up once SQLite is dropped from local dev entirely, but would otherwise require either duplicating the read/write code paths per environment or giving up SQLite for local dev too.
 
-What it needs instead:
+What it still needs:
 
-- Hosted Postgres (RDS, Cloud SQL, Neon, Supabase, etc.), same Prisma schema with the `provider` in `prisma/schema.prisma` changed from `sqlite` to `postgresql` and the handful of SQLite-only workarounds removed - notably the JSON-as-string columns (`history`, `creativeSpec` etc. are `String` fields holding `JSON.stringify`'d data because SQLite has no native JSON type) should become real `Json` columns.
-- Connection pooling (PgBouncer or Prisma's own pooling) since serverless/edge deployments open far more connections than a single long-lived SQLite handle ever did.
-- A real migration pipeline: migrations currently run by hand (`prisma migrate deploy`) or as part of `migrate reset`; production needs this gated behind CI/CD with a rollback plan, run against a database that isn't also serving live traffic mid-migration.
-- Automated backups and a tested restore procedure.
+- A real migration history for the production schema: it currently has none (see `prisma/schema.production.prisma`'s header) - the app is deployed via `prisma db push`, which has no rollback and no audit trail of schema changes. Generating one requires a `prisma migrate dev` run against a real Postgres instance (a local one, or a scratch Neon branch), which hasn't happened yet.
+- A real migration pipeline once that history exists: gated behind CI/CD with a rollback plan, run against a database that isn't also serving live traffic mid-migration.
+- Connection pooling: Neon's own pooled connection string is used for `DATABASE_URL` today, which covers basic serverless fan-out; a busier deployment may want PgBouncer or Prisma Accelerate in front of it.
+- Automated backups and a tested restore procedure beyond Neon's point-in-time recovery defaults.
 - The `IdempotencyRecord` table needs a retention policy (a TTL/cleanup job) - nothing currently deletes old rows, so it grows forever.
+- Keeping `prisma/schema.prisma` and `prisma/schema.production.prisma` in sync is currently a manual step with no drift check - worth a CI job that diffs the model definitions if this project outlives the assessment.
 
 ## The fixture clock
 
