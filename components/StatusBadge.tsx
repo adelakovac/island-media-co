@@ -1,10 +1,10 @@
 import type { StatusTone } from "@/lib/status-tone";
 
 const TONE_CLASSES: Record<StatusTone, string> = {
-  neutral: "bg-brand-navy-900/5 text-brand-navy-800",
-  warning: "bg-brand-amber-100 text-brand-amber-500",
-  positive: "bg-brand-teal-100 text-brand-teal-600",
-  negative: "bg-brand-red-100 text-brand-red-600",
+  neutral: "bg-brand-carbon/5 text-brand-carbon",
+  warning: "bg-brand-warning/10 text-brand-warning",
+  positive: "bg-brand-success/10 text-brand-success",
+  negative: "bg-brand-danger/10 text-brand-danger",
 };
 
 export function StatusBadge({ label, tone }: { label: string; tone: StatusTone }) {

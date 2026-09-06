@@ -41,8 +41,8 @@ export default function SignupPage() {
 
   return (
     <main className="mx-auto w-full max-w-md flex-1 px-4 py-10">
-      <h1 className="text-xl font-semibold text-brand-navy-900">Sign up as a new client</h1>
-      <p className="mt-1 text-sm text-brand-navy-800/70">
+      <h1 className="text-xl font-semibold text-brand-carbon">Sign up as a new client</h1>
+      <p className="mt-1 text-sm text-brand-carbon/70">
         Create an organisation and contact to browse the catalogue and submit advertising requests.
       </p>
 

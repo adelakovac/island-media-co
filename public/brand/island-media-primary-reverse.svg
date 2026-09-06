@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="310" height="100" viewBox="0 0 310 100" role="img" aria-labelledby="title desc">
+  <title id="title">Island Media Co reverse logo</title>
+  <desc id="desc">A signal-coral frame and warm-white wordmark for dark backgrounds.</desc>
+  <g transform="translate(4 4)">
+    <path d="M34 6H6V34" fill="none" stroke="#FF5A3D" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/>
+    <path d="M58 86H86V58" fill="none" stroke="#FF5A3D" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/>
+    <rect x="40" y="21" width="12" height="12" fill="#F6F4EF"/>
+    <rect x="40" y="40" width="12" height="33" fill="#F6F4EF"/>
+  </g>
+  <g fill="#F6F4EF" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif">
+    <text x="116" y="47" font-size="39" font-weight="700" letter-spacing="0.6">ISLAND</text>
+    <text x="118" y="76" font-size="18" font-weight="600" letter-spacing="5.2">MEDIA CO.</text>
+  </g>
+</svg>

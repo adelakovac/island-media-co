@@ -35,12 +35,12 @@ export function BookingRequestsSection({ userId, refreshToken }: { userId: strin
   }, [userId, refreshToken]);
 
   if (loading) return null;
-  if (error) return <p className="mb-8 text-sm text-brand-red-600">{error}</p>;
+  if (error) return <p className="mb-8 text-sm text-brand-danger">{error}</p>;
   if (!requests || requests.length === 0) return null;
 
   return (
     <section className="mb-8">
-      <h2 className="mb-3 text-lg font-semibold text-brand-navy-900">Your booking requests</h2>
+      <h2 className="mb-3 text-lg font-semibold text-brand-carbon">Your booking requests</h2>
       <div className="flex flex-col gap-3">
         {requests.map((request) => {
           const lastManagerNote = [...request.history].reverse().find((entry) => entry.actor === "manager" && entry.note);
@@ -48,8 +48,8 @@ export function BookingRequestsSection({ userId, refreshToken }: { userId: strin
             <Card key={request.id} className="p-4">
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
-                  <p className="font-medium text-brand-navy-900">{request.productName}</p>
-                  <p className="text-xs text-brand-navy-800/60">
+                  <p className="font-medium text-brand-carbon">{request.productName}</p>
+                  <p className="text-xs text-brand-carbon/60">
                     {formatDate(request.startDate)} – {formatDate(request.endDate)} · submitted {formatDateTime(request.createdAt)}
                   </p>
                 </div>
@@ -57,15 +57,15 @@ export function BookingRequestsSection({ userId, refreshToken }: { userId: strin
               </div>
 
               {request.status === "information_required" && lastManagerNote && (
-                <div className="mt-3 rounded-md border border-brand-amber-500/30 bg-brand-amber-100/40 p-3 text-sm">
-                  <p className="font-medium text-brand-amber-500">The manager needs more information from you</p>
-                  <p className="mt-1 text-brand-navy-800">{lastManagerNote.note}</p>
+                <div className="mt-3 rounded-md border border-brand-warning/30 bg-brand-warning/10 p-3 text-sm">
+                  <p className="font-medium text-brand-warning">The manager needs more information from you</p>
+                  <p className="mt-1 text-brand-carbon">{lastManagerNote.note}</p>
                 </div>
               )}
 
               {request.status !== "information_required" && lastManagerNote && (
-                <p className="mt-3 text-sm text-brand-navy-800/70">
-                  <span className="font-medium text-brand-navy-900">Manager note:</span> {lastManagerNote.note}
+                <p className="mt-3 text-sm text-brand-carbon/70">
+                  <span className="font-medium text-brand-carbon">Manager note:</span> {lastManagerNote.note}
                 </p>
               )}
             </Card>

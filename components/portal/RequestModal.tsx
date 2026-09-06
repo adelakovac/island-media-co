@@ -92,13 +92,13 @@ export function RequestModal({
   return (
     <Modal open={open} onClose={onClose} title={`Submit request: ${productName}`}>
       {!canSubmit ? (
-        <p className="text-sm text-brand-navy-800/70">
+        <p className="text-sm text-brand-carbon/70">
           Sign in as an existing client, or sign up, to submit an advertising request.
         </p>
       ) : success ? (
         <div className="text-sm">
-          <p className="font-medium text-brand-teal-600">Request submitted.</p>
-          <p className="mt-1 text-brand-navy-800/70">
+          <p className="font-medium text-brand-success">Request submitted.</p>
+          <p className="mt-1 text-brand-carbon/70">
             Our team will review it and follow up via your client summary.
           </p>
           <Button className="mt-4" onClick={onClose}>

@@ -1,11 +1,11 @@
 import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 
 const CONTROL_CLASSES =
-  "w-full rounded-md border border-brand-navy-900/20 bg-white px-3 py-2 text-sm text-brand-navy-900 outline-none focus:border-brand-teal-600 focus:ring-1 focus:ring-brand-teal-600 disabled:bg-slate-50 disabled:text-slate-400";
+  "w-full rounded-control border border-brand-mist bg-white px-3 py-2 text-sm text-brand-carbon outline-none focus:border-brand-coral focus:shadow-[var(--shadow-focus-ring)] disabled:bg-slate-50 disabled:text-slate-400";
 
 export function Label({ children, htmlFor }: { children: ReactNode; htmlFor?: string }) {
   return (
-    <label htmlFor={htmlFor} className="mb-1 block text-xs font-medium text-brand-navy-800">
+    <label htmlFor={htmlFor} className="mb-1 block text-xs font-medium text-brand-carbon">
       {children}
     </label>
   );
@@ -25,5 +25,5 @@ export function TextArea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
 
 export function FieldError({ children }: { children: ReactNode }) {
   if (!children) return null;
-  return <p className="mt-1 text-xs text-brand-red-600">{children}</p>;
+  return <p className="mt-1 text-xs text-brand-danger">{children}</p>;
 }

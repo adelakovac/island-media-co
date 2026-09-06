@@ -183,7 +183,7 @@ export default function BookingRequestDetailPage() {
   if (!sessionLoading && (!user || user.role !== "manager")) {
     return (
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6">
-        <Card className="p-4 text-sm text-brand-navy-800">
+        <Card className="p-4 text-sm text-brand-carbon">
           Sign in as a manager to review this request. Use the account switcher above.
         </Card>
       </main>
@@ -196,19 +196,19 @@ export default function BookingRequestDetailPage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6">
-      <Link href="/manager/booking-requests" className="text-sm text-brand-teal-600 hover:underline">
+      <Link href="/manager/booking-requests" className="text-sm text-brand-coral hover:underline">
         ← Back to booking requests
       </Link>
 
-      {(loading || sessionLoading) && <p className="mt-6 text-sm text-brand-navy-800/60">Loading…</p>}
-      {error && !loading && <Card className="mt-6 border-brand-red-600/20 bg-brand-red-100/40 p-4 text-sm text-brand-red-600">{error}</Card>}
+      {(loading || sessionLoading) && <p className="mt-6 text-sm text-brand-carbon/60">Loading…</p>}
+      {error && !loading && <Card className="mt-6 border-brand-danger/30 bg-brand-danger/10 p-4 text-sm text-brand-danger">{error}</Card>}
 
       {detail && !loading && (
         <div className="mt-4 flex flex-col gap-4">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h1 className="text-xl font-semibold text-brand-navy-900">{detail.organisation.name}</h1>
-              <p className="text-sm text-brand-navy-800/60">
+              <h1 className="text-xl font-semibold text-brand-carbon">{detail.organisation.name}</h1>
+              <p className="text-sm text-brand-carbon/60">
                 {detail.product.name} · {formatDate(detail.startDate)} – {formatDate(detail.endDate)}
               </p>
             </div>
@@ -216,22 +216,22 @@ export default function BookingRequestDetailPage() {
           </div>
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-semibold text-brand-navy-900">Request details</h2>
+            <h2 className="mb-2 text-sm font-semibold text-brand-carbon">Request details</h2>
             <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-              <dt className="text-brand-navy-800/60">Budget</dt>
-              <dd className="text-brand-navy-900">£{detail.budget.toLocaleString()} / month</dd>
-              <dt className="text-brand-navy-800/60">Objective</dt>
-              <dd className="text-brand-navy-900">{detail.objective}</dd>
+              <dt className="text-brand-carbon/60">Budget</dt>
+              <dd className="text-brand-carbon">£{detail.budget.toLocaleString()} / month</dd>
+              <dt className="text-brand-carbon/60">Objective</dt>
+              <dd className="text-brand-carbon">{detail.objective}</dd>
               {detail.notes && (
                 <>
-                  <dt className="text-brand-navy-800/60">Notes</dt>
-                  <dd className="text-brand-navy-900">{detail.notes}</dd>
+                  <dt className="text-brand-carbon/60">Notes</dt>
+                  <dd className="text-brand-carbon">{detail.notes}</dd>
                 </>
               )}
               {detail.requestedAssetId && (
                 <>
-                  <dt className="text-brand-navy-800/60">Requested asset</dt>
-                  <dd className="text-brand-navy-900">
+                  <dt className="text-brand-carbon/60">Requested asset</dt>
+                  <dd className="text-brand-carbon">
                     {detail.product.assetOptions.find((asset) => asset.id === detail.requestedAssetId)?.name ?? detail.requestedAssetId}
                   </dd>
                 </>
@@ -241,15 +241,15 @@ export default function BookingRequestDetailPage() {
 
           <Card className="p-4">
             <div className="mb-2 flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-brand-navy-900">Availability</h2>
+              <h2 className="text-sm font-semibold text-brand-carbon">Availability</h2>
               <AvailabilityBadge state={detail.currentAvailability.state} title={detail.currentAvailability.reason} />
             </div>
-            <p className="text-sm text-brand-navy-800/70">{detail.currentAvailability.reason}</p>
+            <p className="text-sm text-brand-carbon/70">{detail.currentAvailability.reason}</p>
             {detail.product.allocationModel === "exclusive_asset" && detail.product.assetOptions.length > 0 && (
               <ul className="mt-3 flex flex-col gap-2">
                 {detail.product.assetOptions.map((asset) => (
-                  <li key={asset.id} className="flex items-center justify-between gap-3 rounded-md border border-brand-navy-900/10 p-2 text-sm">
-                    <span className="text-brand-navy-900">{asset.name}</span>
+                  <li key={asset.id} className="flex items-center justify-between gap-3 rounded-md border border-brand-carbon/10 p-2 text-sm">
+                    <span className="text-brand-carbon">{asset.name}</span>
                     <AvailabilityBadge state={asset.availability.state} title={asset.availability.reason} />
                   </li>
                 ))}
@@ -258,15 +258,15 @@ export default function BookingRequestDetailPage() {
           </Card>
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-semibold text-brand-navy-900">History</h2>
+            <h2 className="mb-2 text-sm font-semibold text-brand-carbon">History</h2>
             <ul className="flex flex-col gap-2 text-sm">
               {detail.history.map((entry, index) => (
-                <li key={index} className="border-l-2 border-brand-navy-900/10 pl-3">
-                  <p className="text-brand-navy-900">
+                <li key={index} className="border-l-2 border-brand-carbon/10 pl-3">
+                  <p className="text-brand-carbon">
                     <span className="font-medium capitalize">{entry.actor}</span> · {entry.action.replace(/_/g, " ")}
                   </p>
-                  <p className="text-xs text-brand-navy-800/50">{new Date(entry.at).toLocaleString("en-GB")}</p>
-                  {entry.note && <p className="mt-0.5 text-brand-navy-800/70">{entry.note}</p>}
+                  <p className="text-xs text-brand-carbon/50">{new Date(entry.at).toLocaleString("en-GB")}</p>
+                  {entry.note && <p className="mt-0.5 text-brand-carbon/70">{entry.note}</p>}
                 </li>
               ))}
             </ul>
@@ -274,7 +274,7 @@ export default function BookingRequestDetailPage() {
 
           {isPending && (
             <Card className="p-4">
-              <h2 className="mb-3 text-sm font-semibold text-brand-navy-900">Decision</h2>
+              <h2 className="mb-3 text-sm font-semibold text-brand-carbon">Decision</h2>
               <div className="mb-3 flex gap-2">
                 <Button variant={tab === "approve" ? "primary" : "secondary"} onClick={() => selectTab("approve")}>
                   Approve
@@ -325,7 +325,7 @@ export default function BookingRequestDetailPage() {
 
           {isApprovedNoContract && !draftContractId && (
             <Card className="p-4">
-              <h2 className="mb-3 text-sm font-semibold text-brand-navy-900">Create draft contract</h2>
+              <h2 className="mb-3 text-sm font-semibold text-brand-carbon">Create draft contract</h2>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label htmlFor="contract-startDate">Start date</Label>
@@ -352,7 +352,7 @@ export default function BookingRequestDetailPage() {
                   <Input id="lineTotal" type="number" min={0} value={lineTotal} onChange={(event) => setLineTotal(event.target.value)} />
                 </div>
               </div>
-              <p className="mt-2 text-xs text-brand-navy-800/50">
+              <p className="mt-2 text-xs text-brand-carbon/50">
                 {formatRate(detail.product.indicativeRate.amount, detail.product.indicativeRate.unit)} indicative rate — set the total price
                 covering the full {formatDate(contractStartDate)} – {formatDate(contractEndDate)} term.
               </p>
@@ -364,8 +364,8 @@ export default function BookingRequestDetailPage() {
           )}
 
           {draftContractId && (
-            <Card className="border-brand-teal-600/30 bg-brand-teal-100/30 p-4 text-sm">
-              <p className="font-medium text-brand-navy-900">{contractSummaryLabel(detail.contractStatus)}</p>
+            <Card className="border-brand-success/30 bg-brand-success/10 p-4 text-sm">
+              <p className="font-medium text-brand-carbon">{contractSummaryLabel(detail.contractStatus)}</p>
               <Link href={`/manager/contracts/${draftContractId}`}>
                 <Button variant="secondary" className="mt-2">
                   View contract →

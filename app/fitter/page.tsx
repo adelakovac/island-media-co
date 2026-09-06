@@ -16,14 +16,14 @@ function JobRow({ job, showDate }: { job: FitterWorkOrder; showDate?: boolean })
     <li>
       <Link
         href={`/fitter/work-orders/${job.id}`}
-        className="block rounded-lg border border-brand-navy-900/10 bg-white p-4 active:bg-brand-navy-900/5"
+        className="block rounded-lg border border-brand-carbon/10 bg-white p-4 active:bg-brand-carbon/5"
       >
         <div className="flex items-start justify-between gap-2">
-          <span className="text-base font-semibold capitalize text-brand-navy-900">{job.type}</span>
+          <span className="text-base font-semibold capitalize text-brand-carbon">{job.type}</span>
           <StatusBadge label={job.status} tone={workOrderTone(job.status)} />
         </div>
-        <p className="mt-1 text-sm text-brand-navy-800/70">{job.organisationName}</p>
-        <div className="mt-3 flex items-center justify-between text-sm text-brand-navy-800/60">
+        <p className="mt-1 text-sm text-brand-carbon/70">{job.organisationName}</p>
+        <div className="mt-3 flex items-center justify-between text-sm text-brand-carbon/60">
           <span>{showDate ? formatDateTime(job.scheduledStart) : formatTime(job.scheduledStart)}</span>
           <span className="truncate pl-2">{job.locationLabel}</span>
         </div>
@@ -69,7 +69,7 @@ export default function FitterJobListPage() {
   if (!sessionLoading && (!user || user.role !== "fitter")) {
     return (
       <main className="mx-auto w-full max-w-md flex-1 px-4 py-8">
-        <Card className="p-4 text-sm text-brand-navy-800">
+        <Card className="p-4 text-sm text-brand-carbon">
           Sign in as a fitter to view your jobs. Use the account switcher above.
         </Card>
       </main>
@@ -85,20 +85,20 @@ export default function FitterJobListPage() {
 
   return (
     <main className="mx-auto w-full max-w-md flex-1 px-4 py-6">
-      <h1 className="text-lg font-semibold text-brand-navy-900">
+      <h1 className="text-lg font-semibold text-brand-carbon">
         {user ? `Hi ${user.name.split(" ")[0]}` : "My jobs"}
       </h1>
-      <p className="mb-5 text-sm text-brand-navy-800/60">Your assigned installation and service jobs.</p>
+      <p className="mb-5 text-sm text-brand-carbon/60">Your assigned installation and service jobs.</p>
 
-      {(loading || sessionLoading) && <p className="text-sm text-brand-navy-800/60">Loading…</p>}
-      {error && <p className="text-sm text-brand-red-600">{error}</p>}
+      {(loading || sessionLoading) && <p className="text-sm text-brand-carbon/60">Loading…</p>}
+      {error && <p className="text-sm text-brand-danger">{error}</p>}
 
       {jobs && !loading && (
         <div className="flex flex-col gap-6">
           <section>
-            <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-navy-800/50">Today</h2>
+            <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-carbon/50">Today</h2>
             {todaysJobs.length === 0 ? (
-              <p className="text-sm text-brand-navy-800/60">No jobs scheduled for today.</p>
+              <p className="text-sm text-brand-carbon/60">No jobs scheduled for today.</p>
             ) : (
               <ul className="flex flex-col gap-3">
                 {todaysJobs.map((job) => (
@@ -109,9 +109,9 @@ export default function FitterJobListPage() {
           </section>
 
           <section>
-            <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-navy-800/50">Upcoming</h2>
+            <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-carbon/50">Upcoming</h2>
             {upcomingJobs.length === 0 ? (
-              <p className="text-sm text-brand-navy-800/60">Nothing else scheduled.</p>
+              <p className="text-sm text-brand-carbon/60">Nothing else scheduled.</p>
             ) : (
               <ul className="flex flex-col gap-3">
                 {upcomingJobs.map((job) => (
@@ -123,7 +123,7 @@ export default function FitterJobListPage() {
 
           {completed.length > 0 && (
             <section>
-              <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-navy-800/50">Completed</h2>
+              <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-carbon/50">Completed</h2>
               <ul className="flex flex-col gap-3">
                 {completed.map((job) => (
                   <JobRow key={job.id} job={job} />
@@ -134,7 +134,7 @@ export default function FitterJobListPage() {
 
           {cancelled.length > 0 && (
             <section>
-              <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-navy-800/50">Cancelled</h2>
+              <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-carbon/50">Cancelled</h2>
               <ul className="flex flex-col gap-3">
                 {cancelled.map((job) => (
                   <JobRow key={job.id} job={job} showDate />

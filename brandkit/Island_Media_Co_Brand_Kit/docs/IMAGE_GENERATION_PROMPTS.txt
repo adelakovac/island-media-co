@@ -1,0 +1,30 @@
+ISLAND MEDIA CO OOH IMAGE PROMPTS
+
+Mode
+OpenAI built-in image generation through Codex.
+
+IMAGE 1
+Use case: ads-marketing
+Asset type: wide brand application image for an editable brand guideline deck
+Primary request: Create a premium editorial photograph of fictional out-of-home advertising in an island transport setting. Show a modern public bus stopped beside a clean contemporary transport hub, with one large rear advertising panel and one portrait digital display visible. The ad surfaces should be intentionally blank graphic fields in warm white and vivid signal coral, with no copy, no logos, and no symbols, so branding can be overlaid later.
+Scene/backdrop: compact coastal European island town, subtle glimpse of sea and stone architecture, contemporary but believable, no identifiable real landmarks
+Style/medium: photorealistic high-end commercial photography, restrained architectural editorial style
+Composition/framing: cinematic 16:9 landscape, slightly low street-level viewpoint, bus placed toward the right, generous clear negative space on the left, visible rectangular ad surfaces, crisp perspective
+Lighting/mood: bright overcast daylight with soft shadows, confident, clear, operational, premium
+Color palette: carbon black, warm off-white, signal coral #FF5A3D, muted concrete grey, small hints of Atlantic blue
+Materials/textures: clean painted metal, glass, matte printed vinyl, lightly textured stone
+Constraints: entirely fictional environment and vehicles; blank advertising surfaces; realistic scale; no people as focal subjects
+Avoid: readable text, logos, watermarks, Jersey flag, real operator identity, tourism postcard styling, saturated gradients, futuristic sci-fi city, distorted vehicles, illegible pseudo-text
+
+IMAGE 2
+Use case: ads-marketing
+Asset type: portrait brand application image for a brand guideline deck
+Primary request: Create a premium editorial photograph of a fictional digital out-of-home placement at an electric vehicle charging station. Show one elegant portrait display integrated into a compact charging point beside a modern stone-and-glass public building. The display should be a clean blank warm-white graphic field with a single signal-coral corner-frame motif, no copy and no logo, suitable for a brand mockup.
+Scene/backdrop: believable coastal European island district, subtle roadway and landscaping, no identifiable real landmark
+Style/medium: photorealistic high-end commercial photography, contemporary architectural editorial style
+Composition/framing: vertical 4:5 portrait image, display placed slightly left of centre, enough breathing room around it, straight lines and clean perspective
+Lighting/mood: late afternoon natural light, premium, calm, visible and trustworthy
+Color palette: carbon #101820, signal coral #FF5A3D, warm white #F6F4EF, concrete grey, restrained Atlantic blue
+Materials/textures: brushed dark metal, anti-glare display glass, stone, subtle planting
+Constraints: entirely fictional equipment and location; display is a usable blank canvas; realistic proportions; no people as focal subjects
+Avoid: readable text, logos, watermarks, brand marks, real EV operator identity, Jersey flag, sci-fi technology, exaggerated neon glow, distorted equipment, illegible pseudo-text

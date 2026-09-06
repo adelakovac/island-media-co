@@ -72,14 +72,14 @@ export default function ContractDetailPage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6">
-      <Link href="/portal" className="text-sm text-brand-teal-600 hover:underline">
+      <Link href="/portal" className="text-sm text-brand-coral hover:underline">
         ← Back to your account
       </Link>
 
-      {(loading || sessionLoading) && <p className="mt-6 text-sm text-brand-navy-800/60">Loading…</p>}
+      {(loading || sessionLoading) && <p className="mt-6 text-sm text-brand-carbon/60">Loading…</p>}
 
       {error && !loading && !sessionLoading && (
-        <Card className="mt-6 border-brand-red-600/20 bg-brand-red-100/40 p-4 text-sm text-brand-red-600">
+        <Card className="mt-6 border-brand-danger/30 bg-brand-danger/10 p-4 text-sm text-brand-danger">
           {error.code === "FORBIDDEN"
             ? "Sign in as this contract's client to view it. Use the account switcher above."
             : error.message}
@@ -90,8 +90,8 @@ export default function ContractDetailPage() {
         <div className="mt-4 flex flex-col gap-4">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h1 className="text-xl font-semibold text-brand-navy-900">Contract {contract.id}</h1>
-              <p className="text-sm text-brand-navy-800/60">
+              <h1 className="text-xl font-semibold text-brand-carbon">Contract {contract.id}</h1>
+              <p className="text-sm text-brand-carbon/60">
                 {formatDate(contract.startDate)} – {formatDate(contract.endDate)} · v{contract.version}
               </p>
             </div>
@@ -99,7 +99,7 @@ export default function ContractDetailPage() {
           </div>
 
           {contractActionRequired(contract.status) && (
-            <Card className="border-brand-amber-500/30 bg-brand-amber-100/40 p-3 text-sm font-medium text-brand-amber-500">
+            <Card className="border-brand-warning/30 bg-brand-warning/10 p-3 text-sm font-medium text-brand-warning">
               {contractActionRequired(contract.status)}
             </Card>
           )}
@@ -123,17 +123,17 @@ export default function ContractDetailPage() {
               Request cancellation
             </Button>
           </div>
-          <p className="text-xs text-brand-navy-800/50">
+          <p className="text-xs text-brand-carbon/50">
             This is a prototype acceptance flow, not a legal electronic signature. Changes and cancellations stay
             pending until management reviews them here.
           </p>
 
           <Card className="p-4">
-            <h2 className="mb-3 text-sm font-semibold text-brand-navy-900">Line items</h2>
+            <h2 className="mb-3 text-sm font-semibold text-brand-carbon">Line items</h2>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[480px] text-left text-sm">
                 <thead>
-                  <tr className="border-b border-brand-navy-900/10 text-xs uppercase tracking-wide text-brand-navy-800/50">
+                  <tr className="border-b border-brand-carbon/10 text-xs uppercase tracking-wide text-brand-carbon/50">
                     <th className="pb-2 pr-2 font-medium">Product</th>
                     <th className="pb-2 pr-2 font-medium">Asset / pool</th>
                     <th className="pb-2 pr-2 font-medium">Qty</th>
@@ -143,14 +143,14 @@ export default function ContractDetailPage() {
                 </thead>
                 <tbody>
                   {contract.items.map((item) => (
-                    <tr key={item.id} className="border-b border-brand-navy-900/5 last:border-0">
-                      <td className="py-2 pr-2 text-brand-navy-900">{item.productName}</td>
-                      <td className="py-2 pr-2 text-brand-navy-800/70">
+                    <tr key={item.id} className="border-b border-brand-carbon/5 last:border-0">
+                      <td className="py-2 pr-2 text-brand-carbon">{item.productName}</td>
+                      <td className="py-2 pr-2 text-brand-carbon/70">
                         {item.assetName ?? item.capacityPoolName ?? "—"}
                       </td>
-                      <td className="py-2 pr-2 text-brand-navy-800/70">{item.quantity}</td>
-                      <td className="py-2 pr-2 text-brand-navy-800/70">{formatRate(item.unitRate, item.rateUnit)}</td>
-                      <td className="py-2 text-right font-medium text-brand-navy-900">
+                      <td className="py-2 pr-2 text-brand-carbon/70">{item.quantity}</td>
+                      <td className="py-2 pr-2 text-brand-carbon/70">{formatRate(item.unitRate, item.rateUnit)}</td>
+                      <td className="py-2 text-right font-medium text-brand-carbon">
                         £{item.lineTotal.toLocaleString()}
                       </td>
                     </tr>
@@ -158,10 +158,10 @@ export default function ContractDetailPage() {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan={4} className="pt-2 text-right text-xs font-medium uppercase text-brand-navy-800/50">
+                    <td colSpan={4} className="pt-2 text-right text-xs font-medium uppercase text-brand-carbon/50">
                       Total
                     </td>
-                    <td className="pt-2 text-right text-sm font-semibold text-brand-navy-900">
+                    <td className="pt-2 text-right text-sm font-semibold text-brand-carbon">
                       {contract.currency} {contract.total.toLocaleString()}
                     </td>
                   </tr>
@@ -171,33 +171,33 @@ export default function ContractDetailPage() {
           </Card>
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-semibold text-brand-navy-900">Campaign</h2>
+            <h2 className="mb-2 text-sm font-semibold text-brand-carbon">Campaign</h2>
             {contract.campaign ? (
               <div className="text-sm">
-                <p className="font-medium text-brand-navy-900">{contract.campaign.name}</p>
-                <p className="mt-1 text-brand-navy-800/60">
+                <p className="font-medium text-brand-carbon">{contract.campaign.name}</p>
+                <p className="mt-1 text-brand-carbon/60">
                   Status: <span className="capitalize">{contract.campaign.status.replace(/_/g, " ")}</span> · Stage:{" "}
                   <span className="capitalize">{contract.campaign.currentStage.replace(/_/g, " ")}</span>
                 </p>
               </div>
             ) : (
-              <p className="text-sm text-brand-navy-800/60">
+              <p className="text-sm text-brand-carbon/60">
                 A campaign will appear here once the contract is accepted and activated.
               </p>
             )}
           </Card>
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-semibold text-brand-navy-900">Campaign & service timeline</h2>
+            <h2 className="mb-2 text-sm font-semibold text-brand-carbon">Campaign & service timeline</h2>
             {contract.serviceEvents.length === 0 ? (
-              <p className="text-sm text-brand-navy-800/60">No service updates yet.</p>
+              <p className="text-sm text-brand-carbon/60">No service updates yet.</p>
             ) : (
               <ul className="flex flex-col gap-3">
                 {contract.serviceEvents.map((event) => (
-                  <li key={event.id} className="border-l-2 border-brand-teal-600/40 pl-3 text-sm">
-                    <p className="font-medium text-brand-navy-900">{event.title}</p>
-                    <p className="text-xs text-brand-navy-800/50">{new Date(event.at).toLocaleString("en-GB")}</p>
-                    {event.clientSummary && <p className="mt-0.5 text-brand-navy-800/70">{event.clientSummary}</p>}
+                  <li key={event.id} className="border-l-2 border-brand-coral/40 pl-3 text-sm">
+                    <p className="font-medium text-brand-carbon">{event.title}</p>
+                    <p className="text-xs text-brand-carbon/50">{new Date(event.at).toLocaleString("en-GB")}</p>
+                    {event.clientSummary && <p className="mt-0.5 text-brand-carbon/70">{event.clientSummary}</p>}
                   </li>
                 ))}
               </ul>
@@ -206,13 +206,13 @@ export default function ContractDetailPage() {
 
           {contract.proofRecords.length > 0 && (
             <Card className="p-4">
-              <h2 className="mb-2 text-sm font-semibold text-brand-navy-900">Proof of completed work</h2>
+              <h2 className="mb-2 text-sm font-semibold text-brand-carbon">Proof of completed work</h2>
               <ul className="flex flex-col gap-3">
                 {contract.proofRecords.map((proof) => (
-                  <li key={proof.id} className="rounded-md border border-brand-navy-900/10 p-3 text-sm">
+                  <li key={proof.id} className="rounded-md border border-brand-carbon/10 p-3 text-sm">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-medium text-brand-navy-900">{proof.fileName}</span>
-                      <span className="text-xs text-brand-navy-800/50">
+                      <span className="font-medium text-brand-carbon">{proof.fileName}</span>
+                      <span className="text-xs text-brand-carbon/50">
                         {new Date(proof.createdAt).toLocaleDateString("en-GB")}
                       </span>
                     </div>
@@ -227,11 +227,11 @@ export default function ContractDetailPage() {
                         <img
                           src={proof.previewUrl}
                           alt={`Proof: ${proof.fileName}`}
-                          className="max-h-48 w-full cursor-pointer rounded-md border border-brand-navy-900/10 object-cover transition-opacity hover:opacity-90"
+                          className="max-h-48 w-full cursor-pointer rounded-md border border-brand-carbon/10 object-cover transition-opacity hover:opacity-90"
                         />
                       </button>
                     )}
-                    <p className="mt-1 text-brand-navy-800/70">{proof.completionNote}</p>
+                    <p className="mt-1 text-brand-carbon/70">{proof.completionNote}</p>
                   </li>
                 ))}
               </ul>
@@ -239,23 +239,23 @@ export default function ContractDetailPage() {
           )}
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-semibold text-brand-navy-900">Your requests</h2>
+            <h2 className="mb-2 text-sm font-semibold text-brand-carbon">Your requests</h2>
             {contract.clientRequests.length === 0 ? (
-              <p className="text-sm text-brand-navy-800/60">No change or cancellation requests submitted.</p>
+              <p className="text-sm text-brand-carbon/60">No change or cancellation requests submitted.</p>
             ) : (
               <ul className="flex flex-col gap-3">
                 {contract.clientRequests.map((clientRequest) => (
-                  <li key={clientRequest.id} className="rounded-md border border-brand-navy-900/10 p-3 text-sm">
+                  <li key={clientRequest.id} className="rounded-md border border-brand-carbon/10 p-3 text-sm">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-medium capitalize text-brand-navy-900">
+                      <span className="font-medium capitalize text-brand-carbon">
                         {clientRequest.type.replace(/_/g, " ")}
                       </span>
-                      <span className="rounded-full bg-brand-amber-100 px-2 py-0.5 text-xs font-medium text-brand-amber-500">
+                      <span className="rounded-full bg-brand-warning/10 px-2 py-0.5 text-xs font-medium text-brand-warning">
                         {CLIENT_REQUEST_STATUS_LABEL[clientRequest.status] ?? clientRequest.status}
                       </span>
                     </div>
-                    <p className="mt-1 text-brand-navy-800/70">{clientRequest.summary}</p>
-                    <p className="mt-1 text-xs text-brand-navy-800/50">
+                    <p className="mt-1 text-brand-carbon/70">{clientRequest.summary}</p>
+                    <p className="mt-1 text-xs text-brand-carbon/50">
                       Submitted {new Date(clientRequest.createdAt).toLocaleString("en-GB")}
                     </p>
                   </li>
@@ -308,7 +308,7 @@ export default function ContractDetailPage() {
                   className="max-h-[70vh] w-full rounded-md object-contain"
                 />
               )}
-              <p className="mt-3 text-sm text-brand-navy-800/70">{viewingProof.completionNote}</p>
+              <p className="mt-3 text-sm text-brand-carbon/70">{viewingProof.completionNote}</p>
             </Modal>
           )}
         </div>

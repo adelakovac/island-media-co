@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="310" height="100" viewBox="0 0 310 100" role="img" aria-labelledby="title desc">
+  <title id="title">Island Media Co carbon monochrome logo</title>
+  <desc id="desc">A one-colour framed I and Island Media Co wordmark.</desc>
+  <g fill="#101820" stroke="#101820">
+    <g transform="translate(4 4)" fill="none" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+      <path d="M34 6H6V34"/>
+      <path d="M58 86H86V58"/>
+    </g>
+    <rect x="44" y="25" width="12" height="12" stroke="none"/>
+    <rect x="44" y="44" width="12" height="33" stroke="none"/>
+  </g>
+  <g fill="#101820" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif">
+    <text x="116" y="47" font-size="39" font-weight="700" letter-spacing="0.6">ISLAND</text>
+    <text x="118" y="76" font-size="18" font-weight="600" letter-spacing="5.2">MEDIA CO.</text>
+  </g>
+</svg>

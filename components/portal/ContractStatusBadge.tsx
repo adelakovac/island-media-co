@@ -9,17 +9,17 @@ const LABELS: Record<string, string> = {
 };
 
 const CLASSES: Record<string, string> = {
-  draft: "bg-brand-navy-900/5 text-brand-navy-800",
-  issued: "bg-brand-amber-100 text-brand-amber-500",
-  change_requested: "bg-brand-amber-100 text-brand-amber-500",
-  accepted: "bg-brand-teal-100 text-brand-teal-600",
-  active: "bg-brand-teal-100 text-brand-teal-600",
-  completed: "bg-brand-navy-900/5 text-brand-navy-800",
-  cancelled: "bg-brand-red-100 text-brand-red-600",
+  draft: "bg-brand-carbon/5 text-brand-carbon",
+  issued: "bg-brand-warning/10 text-brand-warning",
+  change_requested: "bg-brand-warning/10 text-brand-warning",
+  accepted: "bg-brand-success/10 text-brand-success",
+  active: "bg-brand-success/10 text-brand-success",
+  completed: "bg-brand-carbon/5 text-brand-carbon",
+  cancelled: "bg-brand-danger/10 text-brand-danger",
 };
 
 export function ContractStatusBadge({ status }: { status: string }) {
-  const className = CLASSES[status] ?? "bg-brand-navy-900/5 text-brand-navy-800";
+  const className = CLASSES[status] ?? "bg-brand-carbon/5 text-brand-carbon";
   const label = LABELS[status] ?? status.replace(/_/g, " ");
   return (
     <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${className}`}>

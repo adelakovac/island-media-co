@@ -126,7 +126,7 @@ export function CompleteJobModal({ open, onClose, workOrderId, onSuccess }: Comp
     <Modal open={open} onClose={onClose} title="Complete job">
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         {offline && (
-          <p className="rounded-md bg-brand-amber-100 px-3 py-2 text-xs font-medium text-brand-amber-500">
+          <p className="rounded-md bg-brand-warning/10 px-3 py-2 text-xs font-medium text-brand-warning">
             You&apos;re offline. This will send automatically once you&apos;re back online.
           </p>
         )}
@@ -148,14 +148,14 @@ export function CompleteJobModal({ open, onClose, workOrderId, onSuccess }: Comp
             accept="image/*"
             capture="environment"
             onChange={handleFileChange}
-            className="block w-full text-sm text-brand-navy-800 file:mr-3 file:rounded-md file:border-0 file:bg-brand-navy-900/5 file:px-3 file:py-2 file:text-sm file:font-medium file:text-brand-navy-900"
+            className="block w-full text-sm text-brand-carbon file:mr-3 file:rounded-md file:border-0 file:bg-brand-carbon/5 file:px-3 file:py-2 file:text-sm file:font-medium file:text-brand-carbon"
           />
           {previewUrl && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={previewUrl}
               alt="Selected proof preview"
-              className="mt-2 max-h-48 w-full rounded-md border border-brand-navy-900/10 object-cover"
+              className="mt-2 max-h-48 w-full rounded-md border border-brand-carbon/10 object-cover"
             />
           )}
         </div>

@@ -61,7 +61,7 @@ export function BlockedReasonModal({ open, onClose, workOrderId, onSuccess }: Bl
   return (
     <Modal open={open} onClose={onClose} title="Report a blocker">
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <p className="text-sm text-brand-navy-800/70">
+        <p className="text-sm text-brand-carbon/70">
           Let management know what&apos;s stopping this job so they can help resolve it.
         </p>
         <div>

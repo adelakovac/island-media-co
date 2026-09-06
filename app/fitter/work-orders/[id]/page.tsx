@@ -19,6 +19,18 @@ const NEXT_STEP: Partial<Record<WorkOrderStatus, { status: "travelling" | "on_si
   travelling: { status: "on_site", label: "Arrived on site" },
 };
 
+const PROGRESS_STEPS: Array<{ status: WorkOrderStatus; label: string }> = [
+  { status: "assigned", label: "Assigned" },
+  { status: "travelling", label: "Travelling" },
+  { status: "on_site", label: "On site" },
+  { status: "completed", label: "Complete" },
+];
+
+function progressStepsDone(status: WorkOrderStatus): number {
+  const index = PROGRESS_STEPS.findIndex((step) => step.status === status);
+  return index === -1 ? 1 : index + 1;
+}
+
 export default function FitterJobDetailPage() {
   const params = useParams<{ id: string }>();
   const { user, loading: sessionLoading } = useSession();
@@ -84,7 +96,7 @@ export default function FitterJobDetailPage() {
   if (!sessionLoading && (!user || user.role !== "fitter")) {
     return (
       <main className="mx-auto w-full max-w-md flex-1 px-4 py-8">
-        <Card className="p-4 text-sm text-brand-navy-800">
+        <Card className="p-4 text-sm text-brand-carbon">
           Sign in as a fitter to view this job. Use the account switcher above.
         </Card>
       </main>
@@ -96,66 +108,91 @@ export default function FitterJobDetailPage() {
 
   return (
     <main className="mx-auto w-full max-w-md flex-1 px-4 py-6">
-      <Link href="/fitter" className="text-sm text-brand-teal-600 hover:underline">
+      <Link href="/fitter" className="text-sm text-brand-coral hover:underline">
         ← My jobs
       </Link>
 
-      {(loading || sessionLoading) && <p className="mt-6 text-sm text-brand-navy-800/60">Loading…</p>}
-      {error && !loading && <Card className="mt-6 border-brand-red-600/20 bg-brand-red-100/40 p-4 text-sm text-brand-red-600">{error}</Card>}
+      {(loading || sessionLoading) && <p className="mt-6 text-sm text-brand-carbon/60">Loading…</p>}
+      {error && !loading && <Card className="mt-6 border-brand-danger/30 bg-brand-danger/10 p-4 text-sm text-brand-danger">{error}</Card>}
 
       {job && !loading && (
         <div className="mt-4 flex flex-col gap-4">
           <div>
             <div className="flex items-start justify-between gap-2">
-              <h1 className="text-xl font-semibold capitalize text-brand-navy-900">{job.type}</h1>
+              <h1 className="text-xl font-semibold capitalize text-brand-carbon">{job.type}</h1>
               <StatusBadge label={job.status} tone={workOrderTone(job.status)} />
             </div>
-            <p className="mt-1 text-sm text-brand-navy-800/70">{job.organisationName}</p>
+            <p className="mt-1 text-sm text-brand-carbon/70">{job.organisationName}</p>
+          </div>
+
+          <div className="relative rounded-surface bg-brand-atlantic p-4 pl-12 text-brand-warm-white">
+            <span
+              aria-hidden
+              className="absolute left-4 top-4 h-4 w-4 -rotate-45 rounded-full rounded-bl-none border-[5px] border-brand-coral"
+            />
+            <strong className="block text-sm">{job.locationLabel}</strong>
           </div>
 
           <Card className="p-4 text-sm">
             <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-2">
-              <dt className="text-brand-navy-800/60">Scheduled</dt>
-              <dd className="text-brand-navy-900">
+              <dt className="text-brand-carbon/60">Scheduled</dt>
+              <dd className="text-brand-carbon">
                 {formatDateTime(job.scheduledStart)} – {formatDateTime(job.scheduledEnd)}
               </dd>
-              <dt className="text-brand-navy-800/60">Location</dt>
-              <dd className="text-brand-navy-900">{job.locationLabel}</dd>
             </dl>
           </Card>
 
+          {job.status !== "cancelled" && (
+            <section>
+              <h2 className="mb-2 text-sm font-semibold text-brand-carbon">Job progress</h2>
+              <div className="grid grid-cols-4 gap-1">
+                {PROGRESS_STEPS.map((step, index) => (
+                  <span
+                    key={step.status}
+                    className={`h-1.5 rounded-full ${index < progressStepsDone(job.status) ? "bg-brand-coral" : "bg-brand-mist"}`}
+                  />
+                ))}
+              </div>
+              <div className="mt-2 flex justify-between text-[10px] text-brand-carbon/60">
+                {PROGRESS_STEPS.map((step) => (
+                  <span key={step.status}>{step.label}</span>
+                ))}
+              </div>
+            </section>
+          )}
+
           <Card className="p-4">
-            <h2 className="mb-1 text-sm font-semibold text-brand-navy-900">Instructions</h2>
-            <p className="text-sm text-brand-navy-800/80">{job.instructions}</p>
+            <h2 className="mb-1 text-sm font-semibold text-brand-carbon">Instructions</h2>
+            <p className="text-sm text-brand-carbon/80">{job.instructions}</p>
           </Card>
 
           {job.status === "blocked" && blockedReason && (
-            <Card className="border-brand-red-600/20 bg-brand-red-100/30 p-4 text-sm">
-              <p className="font-medium text-brand-red-600">Blocked</p>
-              <p className="mt-1 text-brand-navy-800/80">{blockedReason}</p>
+            <Card className="border-brand-danger/30 bg-brand-danger/10 p-4 text-sm">
+              <p className="font-medium text-brand-danger">Blocked</p>
+              <p className="mt-1 text-brand-carbon/80">{blockedReason}</p>
             </Card>
           )}
 
           {job.status === "completed" && (
-            <Card className="border-brand-teal-600/30 bg-brand-teal-100/30 p-4 text-sm">
-              <p className="font-medium text-brand-teal-600">Job completed</p>
-              {job.completionNote && <p className="mt-1 text-brand-navy-800/80">{job.completionNote}</p>}
-              <p className="mt-1 text-xs text-brand-navy-800/50">
+            <Card className="border-brand-success/30 bg-brand-success/10 p-4 text-sm">
+              <p className="font-medium text-brand-success">Job completed</p>
+              {job.completionNote && <p className="mt-1 text-brand-carbon/80">{job.completionNote}</p>}
+              <p className="mt-1 text-xs text-brand-carbon/50">
                 {job.proofRecordIds.length} proof {job.proofRecordIds.length === 1 ? "file" : "files"} attached.
               </p>
             </Card>
           )}
 
           {job.status === "cancelled" && (
-            <Card className="border-brand-red-600/20 bg-brand-red-100/30 p-4 text-sm">
-              <p className="font-medium text-brand-red-600">Job cancelled</p>
-              <p className="mt-1 text-brand-navy-800/80">
+            <Card className="border-brand-danger/30 bg-brand-danger/10 p-4 text-sm">
+              <p className="font-medium text-brand-danger">Job cancelled</p>
+              <p className="mt-1 text-brand-carbon/80">
                 The contract behind this job was cancelled. No further action is needed.
               </p>
             </Card>
           )}
 
-          {stepError && <p className="text-sm text-brand-red-600">{stepError}</p>}
+          {stepError && <p className="text-sm text-brand-danger">{stepError}</p>}
 
           {job.status !== "completed" && job.status !== "blocked" && job.status !== "cancelled" && (
             <div className="flex flex-col gap-3">
@@ -177,7 +214,7 @@ export default function FitterJobDetailPage() {
 
           {job.status === "blocked" && (
             <div className="flex flex-col gap-3">
-              <p className="text-xs text-brand-navy-800/50">Resume once the blocker is resolved.</p>
+              <p className="text-xs text-brand-carbon/50">Resume once the blocker is resolved.</p>
               <Button className="min-h-14 text-base" disabled={stepSubmitting} onClick={() => advanceTo("travelling")}>
                 Mark travelling
               </Button>
@@ -191,15 +228,15 @@ export default function FitterJobDetailPage() {
           )}
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-semibold text-brand-navy-900">History</h2>
+            <h2 className="mb-2 text-sm font-semibold text-brand-carbon">History</h2>
             <ul className="flex flex-col gap-2 text-sm">
               {job.history.map((entry, index) => (
-                <li key={index} className="border-l-2 border-brand-navy-900/10 pl-3">
-                  <p className="text-brand-navy-900">
+                <li key={index} className="border-l-2 border-brand-carbon/10 pl-3">
+                  <p className="text-brand-carbon">
                     <span className="font-medium capitalize">{entry.actor}</span> · {entry.action.replace(/_/g, " ")}
                   </p>
-                  <p className="text-xs text-brand-navy-800/50">{new Date(entry.at).toLocaleString("en-GB")}</p>
-                  {entry.note && <p className="mt-0.5 text-brand-navy-800/70">{entry.note}</p>}
+                  <p className="text-xs text-brand-carbon/50">{new Date(entry.at).toLocaleString("en-GB")}</p>
+                  {entry.note && <p className="mt-0.5 text-brand-carbon/70">{entry.note}</p>}
                 </li>
               ))}
             </ul>

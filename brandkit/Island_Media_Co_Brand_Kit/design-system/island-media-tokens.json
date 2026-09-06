@@ -1,0 +1,54 @@
+{
+  "brand": {
+    "name": "Island Media Co",
+    "concept": "The Public Frame",
+    "typeface": {
+      "primary": "Avenir Next",
+      "fallback": "Avenir, Helvetica Neue, Arial, sans-serif"
+    }
+  },
+  "color": {
+    "carbon": "#101820",
+    "signalCoral": "#FF5A3D",
+    "warmWhite": "#F6F4EF",
+    "atlantic": "#17324D",
+    "concrete": "#AAB3BA",
+    "mist": "#E3E7E4",
+    "white": "#FFFFFF",
+    "success": "#08734D",
+    "warning": "#945500",
+    "danger": "#C33232",
+    "info": "#2367C7"
+  },
+  "spacing": {
+    "1": "4px",
+    "2": "8px",
+    "3": "12px",
+    "4": "16px",
+    "5": "24px",
+    "6": "32px",
+    "7": "48px",
+    "8": "64px"
+  },
+  "radius": {
+    "small": "6px",
+    "control": "10px",
+    "surface": "12px",
+    "feature": "20px",
+    "full": "999px"
+  },
+  "shadow": {
+    "surface": "0 8px 24px rgba(16, 24, 32, 0.10)",
+    "focus": "0 0 0 3px rgba(255, 90, 61, 0.28)"
+  },
+  "typeScale": {
+    "display": { "size": "56px", "lineHeight": "60px", "weight": 700 },
+    "h1": { "size": "40px", "lineHeight": "44px", "weight": 700 },
+    "h2": { "size": "32px", "lineHeight": "36px", "weight": 700 },
+    "h3": { "size": "24px", "lineHeight": "30px", "weight": 650 },
+    "bodyLarge": { "size": "18px", "lineHeight": "28px", "weight": 450 },
+    "body": { "size": "16px", "lineHeight": "24px", "weight": 450 },
+    "small": { "size": "14px", "lineHeight": "20px", "weight": 450 },
+    "label": { "size": "13px", "lineHeight": "16px", "weight": 650, "letterSpacing": "0.08em" }
+  }
+}

@@ -8,7 +8,7 @@ import type { SwitchableUser } from "@/lib/client/types";
 
 const SIGNUP_VALUE = "__signup__";
 
-export function RoleSwitcher() {
+export function RoleSwitcher({ layout = "bar" }: { layout?: "bar" | "sidebar" } = {}) {
   const { user, organisation, login, logout } = useSession();
   const router = useRouter();
   const [switching, setSwitching] = useState(false);
@@ -52,45 +52,92 @@ export function RoleSwitcher() {
   const fitters = users.filter((option) => option.role === "fitter");
   const clients = users.filter((option) => option.role === "client");
 
+  const dark = layout === "sidebar" || user?.role === "manager" || user?.role === "fitter";
+  const initials = user
+    ? user.name
+        .split(" ")
+        .map((part) => part[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase()
+    : null;
+
+  const selectClassName = dark
+    ? "rounded-control border border-brand-warm-white/20 bg-brand-carbon px-2 py-1.5 text-sm text-brand-warm-white outline-none focus:border-brand-coral"
+    : "rounded-control border border-brand-mist bg-white px-2 py-1.5 text-sm text-brand-carbon outline-none focus:border-brand-coral";
+
+  const selectEl = (
+    <select
+      aria-label="Switch prototype user"
+      value={user?.id ?? ""}
+      disabled={switching}
+      onChange={(event) => handleChange(event.target.value)}
+      className={layout === "sidebar" ? `${selectClassName} w-full` : selectClassName}
+    >
+      <option value="">Not signed in</option>
+      <optgroup label="Manager">
+        {managers.map((option) => (
+          <option key={option.id} value={option.id}>
+            {option.name}
+          </option>
+        ))}
+      </optgroup>
+      <optgroup label="Fitter">
+        {fitters.map((option) => (
+          <option key={option.id} value={option.id}>
+            {option.name}
+          </option>
+        ))}
+      </optgroup>
+      <optgroup label="Existing client">
+        {clients.map((option) => (
+          <option key={option.id} value={option.id}>
+            {option.name} ({option.organisationName ?? "no organisation"})
+          </option>
+        ))}
+      </optgroup>
+      <option value={SIGNUP_VALUE}>New client signup…</option>
+    </select>
+  );
+
+  if (layout === "sidebar") {
+    return (
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          {initials && (
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-coral text-xs font-bold text-brand-carbon">
+              {initials}
+            </span>
+          )}
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-brand-warm-white">{user ? user.name : "Not signed in"}</p>
+            {user && (
+              <p className="truncate text-xs text-brand-warm-white/60">
+                {user.role}
+                {organisation ? ` · ${organisation.name}` : ""}
+              </p>
+            )}
+          </div>
+        </div>
+        {selectEl}
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center gap-3">
+      {initials && (
+        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-coral text-xs font-bold text-brand-carbon">
+          {initials}
+        </span>
+      )}
       {user && (
-        <span className="hidden text-xs text-white/70 sm:inline">
+        <span className={`hidden text-xs sm:inline ${dark ? "text-brand-warm-white/70" : "text-brand-carbon/70"}`}>
           {user.name} · {user.role}
           {organisation ? ` · ${organisation.name}` : ""}
         </span>
       )}
-      <select
-        aria-label="Switch prototype user"
-        value={user?.id ?? ""}
-        disabled={switching}
-        onChange={(event) => handleChange(event.target.value)}
-        className="rounded-md border border-white/20 bg-brand-navy-800 px-2 py-1.5 text-sm text-white outline-none focus:border-brand-teal-500"
-      >
-        <option value="">Not signed in</option>
-        <optgroup label="Manager">
-          {managers.map((option) => (
-            <option key={option.id} value={option.id}>
-              {option.name}
-            </option>
-          ))}
-        </optgroup>
-        <optgroup label="Fitter">
-          {fitters.map((option) => (
-            <option key={option.id} value={option.id}>
-              {option.name}
-            </option>
-          ))}
-        </optgroup>
-        <optgroup label="Existing client">
-          {clients.map((option) => (
-            <option key={option.id} value={option.id}>
-              {option.name} ({option.organisationName ?? "no organisation"})
-            </option>
-          ))}
-        </optgroup>
-        <option value={SIGNUP_VALUE}>New client signup…</option>
-      </select>
+      {selectEl}
     </div>
   );
 }

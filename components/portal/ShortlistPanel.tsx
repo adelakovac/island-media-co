@@ -11,16 +11,16 @@ export function ShortlistPanel({ onRequest }: { onRequest: (productId: string, p
 
   return (
     <Card className="mb-6 p-4">
-      <h3 className="mb-2 text-sm font-semibold text-brand-navy-900">Your shortlist</h3>
+      <h3 className="mb-2 text-sm font-semibold text-brand-carbon">Your shortlist</h3>
       <ul className="flex flex-col gap-2">
         {items.map((item) => (
           <li
             key={item.productId}
-            className="flex items-center justify-between gap-3 rounded-md border border-brand-navy-900/10 px-3 py-2 text-sm"
+            className="flex items-center justify-between gap-3 rounded-md border border-brand-carbon/10 px-3 py-2 text-sm"
           >
             <div>
-              <p className="font-medium text-brand-navy-900">{item.name}</p>
-              <p className="text-xs text-brand-navy-800/60">{item.rateLabel}</p>
+              <p className="font-medium text-brand-carbon">{item.name}</p>
+              <p className="text-xs text-brand-carbon/60">{item.rateLabel}</p>
             </div>
             <div className="flex gap-2">
               <Button variant="primary" onClick={() => onRequest(item.productId, item.name)}>

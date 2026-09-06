@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Island Media Co management template</title>
+    <link rel="stylesheet" href="ui-examples.css">
+  </head>
+  <body>
+    <main class="management-shell">
+      <aside class="management-sidebar">
+        <img class="logo-light" src="../../assets/logo/island-media-primary-reverse.svg" alt="Island Media Co">
+        <nav class="management-nav" aria-label="Management navigation">
+          <a class="active" href="#"><span class="nav-glyph"></span>Overview</a>
+          <a href="#"><span class="nav-glyph"></span>Booking requests</a>
+          <a href="#"><span class="nav-glyph"></span>Contracts</a>
+          <a href="#"><span class="nav-glyph"></span>Campaigns</a>
+          <a href="#"><span class="nav-glyph"></span>Field work</a>
+          <a href="#"><span class="nav-glyph"></span>Inventory</a>
+        </nav>
+        <div class="management-account">
+          <span class="avatar">EM</span>
+          <div>
+            <strong style="display:block;font-size:13px">Elena Morris</strong>
+            <span style="display:block;margin-top:2px;color:#97a2a8;font-size:11px">Agency manager</span>
+          </div>
+        </div>
+      </aside>
+      <section class="management-main">
+        <header class="management-topbar">
+          <div>
+            <p class="eyebrow">Operations overview</p>
+            <h1>Good morning, Elena</h1>
+          </div>
+          <div class="top-actions">
+            <span class="date-chip">15 January 2027</span>
+            <button class="button-dark">Create work order</button>
+          </div>
+        </header>
+
+        <div class="attention-grid">
+          <article class="attention-hero">
+            <p class="eyebrow" style="color:#ff8b75">Needs attention</p>
+            <h2>Two booking requests need an availability check today.</h2>
+            <p>Review inventory before issuing a contract. Active holds and confirmed outages are already included.</p>
+          </article>
+          <article class="attention-count">
+            <span>Open decisions</span>
+            <strong>04</strong>
+            <span class="muted" style="font-size:12px;font-weight:600">2 requests, 1 proof review, 1 blocked job</span>
+          </article>
+        </div>
+
+        <div class="section-row">
+          <h2>Latest booking requests</h2>
+          <a href="#">View all requests</a>
+        </div>
+        <div class="request-table">
+          <div class="request-row header">
+            <span>Client</span><span>Placement</span><span>Requested</span><span>Budget</span><span>Status</span>
+          </div>
+          <div class="request-row">
+            <strong>Northshore Retail</strong>
+            <span>Hub portrait screen network</span>
+            <span>01 Feb to 15 Feb</span>
+            <span>£1,200</span>
+            <span><span class="tag tag-attention">Review now</span></span>
+          </div>
+          <div class="request-row">
+            <strong>Blue Rock Energy</strong>
+            <span>Charging-station screen</span>
+            <span>10 Feb to 10 Mar</span>
+            <span>On request</span>
+            <span><span class="tag tag-info">More info</span></span>
+          </div>
+          <div class="request-row">
+            <strong>Harbour Foods</strong>
+            <span>Delivery van rear</span>
+            <span>01 Mar to 01 Sep</span>
+            <span>£2,700</span>
+            <span><span class="tag tag-success">Available</span></span>
+          </div>
+          <div class="request-row">
+            <strong>Stone &amp; Field</strong>
+            <span>Bus rear panel</span>
+            <span>20 Jan to 20 Feb</span>
+            <span>£950</span>
+            <span><span class="tag tag-neutral">Draft reply</span></span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

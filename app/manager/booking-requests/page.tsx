@@ -41,7 +41,7 @@ export default function BookingRequestListPage() {
   if (!sessionLoading && (!user || user.role !== "manager")) {
     return (
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
-        <Card className="p-4 text-sm text-brand-navy-800">
+        <Card className="p-4 text-sm text-brand-carbon">
           Sign in as a manager to view booking requests. Use the account switcher above.
         </Card>
       </main>
@@ -52,8 +52,8 @@ export default function BookingRequestListPage() {
     <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold text-brand-navy-900">Booking requests</h1>
-          <p className="mt-1 text-sm text-brand-navy-800/60">Every enquiry submitted through the client portal.</p>
+          <h1 className="text-xl font-semibold text-brand-carbon">Booking requests</h1>
+          <p className="mt-1 text-sm text-brand-carbon/60">Every enquiry submitted through the client portal.</p>
         </div>
         <Select value={status} onChange={(event) => setStatus(event.target.value)} className="w-56">
           {STATUS_OPTIONS.map((option) => (
@@ -64,17 +64,17 @@ export default function BookingRequestListPage() {
         </Select>
       </div>
 
-      {(loading || sessionLoading) && <p className="text-sm text-brand-navy-800/60">Loading…</p>}
-      {error && <p className="text-sm text-brand-red-600">{error}</p>}
+      {(loading || sessionLoading) && <p className="text-sm text-brand-carbon/60">Loading…</p>}
+      {error && <p className="text-sm text-brand-danger">{error}</p>}
 
       {items && !loading && (
         <Card className="overflow-x-auto p-4">
           {items.length === 0 ? (
-            <p className="text-sm text-brand-navy-800/60">No booking requests match this filter.</p>
+            <p className="text-sm text-brand-carbon/60">No booking requests match this filter.</p>
           ) : (
             <table className="w-full min-w-[640px] text-left text-sm">
               <thead>
-                <tr className="border-b border-brand-navy-900/10 text-xs uppercase tracking-wide text-brand-navy-800/50">
+                <tr className="border-b border-brand-carbon/10 text-xs uppercase tracking-wide text-brand-carbon/50">
                   <th className="pb-2 pr-2 font-medium">Organisation</th>
                   <th className="pb-2 pr-2 font-medium">Product</th>
                   <th className="pb-2 pr-2 font-medium">Dates</th>
@@ -84,20 +84,20 @@ export default function BookingRequestListPage() {
               </thead>
               <tbody>
                 {items.map((item) => (
-                  <tr key={item.id} className="border-b border-brand-navy-900/5 last:border-0">
+                  <tr key={item.id} className="border-b border-brand-carbon/5 last:border-0">
                     <td className="py-2 pr-2">
-                      <Link href={`/manager/booking-requests/${item.id}`} className="font-medium text-brand-navy-900 hover:text-brand-teal-600">
+                      <Link href={`/manager/booking-requests/${item.id}`} className="font-medium text-brand-carbon hover:text-brand-coral">
                         {item.organisationName}
                       </Link>
                     </td>
-                    <td className="py-2 pr-2 text-brand-navy-800/70">{item.productName}</td>
-                    <td className="py-2 pr-2 text-brand-navy-800/70">
+                    <td className="py-2 pr-2 text-brand-carbon/70">{item.productName}</td>
+                    <td className="py-2 pr-2 text-brand-carbon/70">
                       {formatDate(item.startDate)} – {formatDate(item.endDate)}
                     </td>
                     <td className="py-2 pr-2">
                       <StatusBadge label={item.status} tone={bookingRequestTone(item.status)} />
                     </td>
-                    <td className="py-2 text-xs font-medium text-brand-amber-500">{item.attentionReason ?? ""}</td>
+                    <td className="py-2 text-xs font-medium text-brand-warning">{item.attentionReason ?? ""}</td>
                   </tr>
                 ))}
               </tbody>

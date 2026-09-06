@@ -7,9 +7,9 @@ const LABELS: Record<AvailabilityState, string> = {
 };
 
 const CLASSES: Record<AvailabilityState, string> = {
-  available: "bg-brand-teal-100 text-brand-teal-600",
-  unavailable: "bg-brand-red-100 text-brand-red-600",
-  confirmation_required: "bg-brand-amber-100 text-brand-amber-500",
+  available: "bg-brand-success/10 text-brand-success",
+  unavailable: "bg-brand-danger/10 text-brand-danger",
+  confirmation_required: "bg-brand-warning/10 text-brand-warning",
 };
 
 export function AvailabilityBadge({ state, title }: { state: AvailabilityState; title?: string }) {

@@ -188,7 +188,7 @@ export default function ManagerContractDetailPage() {
   if (!sessionLoading && (!user || user.role !== "manager")) {
     return (
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6">
-        <Card className="p-4 text-sm text-brand-navy-800">
+        <Card className="p-4 text-sm text-brand-carbon">
           Sign in as a manager to view this contract. Use the account switcher above.
         </Card>
       </main>
@@ -197,19 +197,19 @@ export default function ManagerContractDetailPage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6">
-      <Link href="/manager" className="text-sm text-brand-teal-600 hover:underline">
+      <Link href="/manager" className="text-sm text-brand-coral hover:underline">
         ← Back to dashboard
       </Link>
 
-      {(loading || sessionLoading) && <p className="mt-6 text-sm text-brand-navy-800/60">Loading…</p>}
-      {error && !loading && <Card className="mt-6 border-brand-red-600/20 bg-brand-red-100/40 p-4 text-sm text-brand-red-600">{error}</Card>}
+      {(loading || sessionLoading) && <p className="mt-6 text-sm text-brand-carbon/60">Loading…</p>}
+      {error && !loading && <Card className="mt-6 border-brand-danger/30 bg-brand-danger/10 p-4 text-sm text-brand-danger">{error}</Card>}
 
       {detail && !loading && (
         <div className="mt-4 flex flex-col gap-4">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h1 className="text-xl font-semibold text-brand-navy-900">{detail.organisationName}</h1>
-              <p className="text-sm text-brand-navy-800/60">
+              <h1 className="text-xl font-semibold text-brand-carbon">{detail.organisationName}</h1>
+              <p className="text-sm text-brand-carbon/60">
                 Contract {detail.id} · {formatDate(detail.startDate)} – {formatDate(detail.endDate)} · v{detail.version}
               </p>
             </div>
@@ -218,7 +218,7 @@ export default function ManagerContractDetailPage() {
 
           {detail.status === "draft" && (
             <Card className="p-4">
-              <p className="mb-2 text-sm text-brand-navy-800/70">This contract is a draft. Issue it to send it to the client for review.</p>
+              <p className="mb-2 text-sm text-brand-carbon/70">This contract is a draft. Issue it to send it to the client for review.</p>
               <FieldError>{issueError}</FieldError>
               <Button disabled={issuing} onClick={issueContract}>
                 {issuing ? "Issuing…" : "Issue contract"}
@@ -227,11 +227,11 @@ export default function ManagerContractDetailPage() {
           )}
 
           <Card className="p-4">
-            <h2 className="mb-3 text-sm font-semibold text-brand-navy-900">Line items</h2>
+            <h2 className="mb-3 text-sm font-semibold text-brand-carbon">Line items</h2>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[480px] text-left text-sm">
                 <thead>
-                  <tr className="border-b border-brand-navy-900/10 text-xs uppercase tracking-wide text-brand-navy-800/50">
+                  <tr className="border-b border-brand-carbon/10 text-xs uppercase tracking-wide text-brand-carbon/50">
                     <th className="pb-2 pr-2 font-medium">Product</th>
                     <th className="pb-2 pr-2 font-medium">Asset / pool</th>
                     <th className="pb-2 pr-2 font-medium">Qty</th>
@@ -241,21 +241,21 @@ export default function ManagerContractDetailPage() {
                 </thead>
                 <tbody>
                   {detail.items.map((item) => (
-                    <tr key={item.id} className="border-b border-brand-navy-900/5 last:border-0">
-                      <td className="py-2 pr-2 text-brand-navy-900">{item.productName}</td>
-                      <td className="py-2 pr-2 text-brand-navy-800/70">{item.assetName ?? item.capacityPoolName ?? "—"}</td>
-                      <td className="py-2 pr-2 text-brand-navy-800/70">{item.quantity}</td>
-                      <td className="py-2 pr-2 text-brand-navy-800/70">{formatRate(item.unitRate, item.rateUnit)}</td>
-                      <td className="py-2 text-right font-medium text-brand-navy-900">£{item.lineTotal.toLocaleString()}</td>
+                    <tr key={item.id} className="border-b border-brand-carbon/5 last:border-0">
+                      <td className="py-2 pr-2 text-brand-carbon">{item.productName}</td>
+                      <td className="py-2 pr-2 text-brand-carbon/70">{item.assetName ?? item.capacityPoolName ?? "—"}</td>
+                      <td className="py-2 pr-2 text-brand-carbon/70">{item.quantity}</td>
+                      <td className="py-2 pr-2 text-brand-carbon/70">{formatRate(item.unitRate, item.rateUnit)}</td>
+                      <td className="py-2 text-right font-medium text-brand-carbon">£{item.lineTotal.toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan={4} className="pt-2 text-right text-xs font-medium uppercase text-brand-navy-800/50">
+                    <td colSpan={4} className="pt-2 text-right text-xs font-medium uppercase text-brand-carbon/50">
                       Total
                     </td>
-                    <td className="pt-2 text-right text-sm font-semibold text-brand-navy-900">
+                    <td className="pt-2 text-right text-sm font-semibold text-brand-carbon">
                       {detail.currency} {detail.total.toLocaleString()}
                     </td>
                   </tr>
@@ -265,46 +265,46 @@ export default function ManagerContractDetailPage() {
           </Card>
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-semibold text-brand-navy-900">Campaign</h2>
+            <h2 className="mb-2 text-sm font-semibold text-brand-carbon">Campaign</h2>
             {detail.campaign ? (
               <p className="text-sm">
-                <span className="font-medium text-brand-navy-900">{detail.campaign.name}</span>
-                <span className="ml-2 text-brand-navy-800/60 capitalize">
+                <span className="font-medium text-brand-carbon">{detail.campaign.name}</span>
+                <span className="ml-2 text-brand-carbon/60 capitalize">
                   {detail.campaign.status.replace(/_/g, " ")} · {detail.campaign.currentStage.replace(/_/g, " ")}
                 </span>
               </p>
             ) : (
-              <p className="text-sm text-brand-navy-800/60">A campaign is created automatically when the contract is issued.</p>
+              <p className="text-sm text-brand-carbon/60">A campaign is created automatically when the contract is issued.</p>
             )}
           </Card>
 
           <Card className="p-4">
-            <h2 className="mb-3 text-sm font-semibold text-brand-navy-900">Work orders</h2>
+            <h2 className="mb-3 text-sm font-semibold text-brand-carbon">Work orders</h2>
             {detail.workOrders.length === 0 ? (
-              <p className="mb-3 text-sm text-brand-navy-800/60">No work orders yet.</p>
+              <p className="mb-3 text-sm text-brand-carbon/60">No work orders yet.</p>
             ) : (
               <ul className="mb-4 flex flex-col gap-2">
                 {detail.workOrders.map((workOrder) => (
-                  <li key={workOrder.id} className="rounded-md border border-brand-navy-900/10 p-3 text-sm">
+                  <li key={workOrder.id} className="rounded-md border border-brand-carbon/10 p-3 text-sm">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-medium capitalize text-brand-navy-900">{workOrder.type}</span>
+                      <span className="font-medium capitalize text-brand-carbon">{workOrder.type}</span>
                       <StatusBadge label={workOrder.status} tone={workOrderTone(workOrder.status)} />
                     </div>
-                    <p className="mt-1 text-brand-navy-800/70">
+                    <p className="mt-1 text-brand-carbon/70">
                       {workOrder.assetName} · {workOrder.assignedUserName} · {new Date(workOrder.scheduledStart).toLocaleString("en-GB")}
                     </p>
-                    <p className="mt-1 text-xs text-brand-navy-800/50">{workOrder.locationLabel}</p>
-                    <p className="mt-1 text-brand-navy-800/70">{workOrder.instructions}</p>
+                    <p className="mt-1 text-xs text-brand-carbon/50">{workOrder.locationLabel}</p>
+                    <p className="mt-1 text-brand-carbon/70">{workOrder.instructions}</p>
                     {workOrder.internalNotes && (
-                      <p className="mt-1 text-xs italic text-brand-navy-800/60">Internal: {workOrder.internalNotes}</p>
+                      <p className="mt-1 text-xs italic text-brand-carbon/60">Internal: {workOrder.internalNotes}</p>
                     )}
                     {workOrder.completionNote && (
-                      <p className="mt-1 text-brand-navy-800/70">Completion note: {workOrder.completionNote}</p>
+                      <p className="mt-1 text-brand-carbon/70">Completion note: {workOrder.completionNote}</p>
                     )}
                     {workOrder.proofRecords.length > 0 && (
                       <ul className="mt-2 flex flex-col gap-2">
                         {workOrder.proofRecords.map((proof) => (
-                          <li key={proof.id} className="text-xs text-brand-navy-800/60">
+                          <li key={proof.id} className="text-xs text-brand-carbon/60">
                             <p>
                               Proof: {proof.fileName} — {proof.completionNote}
                             </p>
@@ -319,7 +319,7 @@ export default function ManagerContractDetailPage() {
                                 <img
                                   src={proof.previewUrl}
                                   alt={`Proof: ${proof.fileName}`}
-                                  className="max-h-32 w-full max-w-xs cursor-pointer rounded-md border border-brand-navy-900/10 object-cover transition-opacity hover:opacity-90"
+                                  className="max-h-32 w-full max-w-xs cursor-pointer rounded-md border border-brand-carbon/10 object-cover transition-opacity hover:opacity-90"
                                 />
                               </button>
                             )}
@@ -333,16 +333,16 @@ export default function ManagerContractDetailPage() {
             )}
 
             {!detail.campaign ? (
-              <p className="text-sm text-brand-navy-800/60">Issue the contract to create a campaign before scheduling work.</p>
+              <p className="text-sm text-brand-carbon/60">Issue the contract to create a campaign before scheduling work.</p>
             ) : detail.campaign.status === "cancelled" ? (
-              <p className="text-sm text-brand-navy-800/60">This campaign was cancelled - no further work can be scheduled.</p>
+              <p className="text-sm text-brand-carbon/60">This campaign was cancelled - no further work can be scheduled.</p>
             ) : distinctAssets.length === 0 ? (
-              <p className="text-sm text-brand-navy-800/60">
+              <p className="text-sm text-brand-carbon/60">
                 This contract has no physical asset line item, so there is nothing for a fitter to install.
               </p>
             ) : (
-              <div className="border-t border-brand-navy-900/10 pt-3">
-                <h3 className="mb-2 text-sm font-semibold text-brand-navy-900">Create work order</h3>
+              <div className="border-t border-brand-carbon/10 pt-3">
+                <h3 className="mb-2 text-sm font-semibold text-brand-carbon">Create work order</h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <Label htmlFor="wo-type">Job type</Label>
@@ -400,17 +400,17 @@ export default function ManagerContractDetailPage() {
           </Card>
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-semibold text-brand-navy-900">Service history</h2>
+            <h2 className="mb-2 text-sm font-semibold text-brand-carbon">Service history</h2>
             {detail.serviceEvents.length === 0 ? (
-              <p className="text-sm text-brand-navy-800/60">No service events yet.</p>
+              <p className="text-sm text-brand-carbon/60">No service events yet.</p>
             ) : (
               <ul className="flex flex-col gap-2">
                 {detail.serviceEvents.map((event) => (
-                  <li key={event.id} className="border-l-2 border-brand-navy-900/10 pl-3 text-sm">
-                    <p className="text-brand-navy-900">
-                      {event.title} {!event.clientVisible && <span className="text-xs text-brand-navy-800/40">(internal only)</span>}
+                  <li key={event.id} className="border-l-2 border-brand-carbon/10 pl-3 text-sm">
+                    <p className="text-brand-carbon">
+                      {event.title} {!event.clientVisible && <span className="text-xs text-brand-carbon/40">(internal only)</span>}
                     </p>
-                    <p className="text-xs text-brand-navy-800/50">{new Date(event.at).toLocaleString("en-GB")}</p>
+                    <p className="text-xs text-brand-carbon/50">{new Date(event.at).toLocaleString("en-GB")}</p>
                   </li>
                 ))}
               </ul>
@@ -419,18 +419,18 @@ export default function ManagerContractDetailPage() {
 
           {detail.clientRequests.length > 0 && (
             <Card className="p-4">
-              <h2 className="mb-2 text-sm font-semibold text-brand-navy-900">Client requests</h2>
+              <h2 className="mb-2 text-sm font-semibold text-brand-carbon">Client requests</h2>
               <ul className="flex flex-col gap-2">
                 {detail.clientRequests.map((clientRequest: ClientRequestRecord) => (
-                  <li key={clientRequest.id} className="rounded-md border border-brand-navy-900/10 p-3 text-sm">
+                  <li key={clientRequest.id} className="rounded-md border border-brand-carbon/10 p-3 text-sm">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-medium capitalize text-brand-navy-900">{clientRequest.type.replace(/_/g, " ")}</span>
+                      <span className="font-medium capitalize text-brand-carbon">{clientRequest.type.replace(/_/g, " ")}</span>
                       <StatusBadge label={clientRequest.status} tone={clientRequestTone(clientRequest.status)} />
                     </div>
-                    <p className="mt-1 text-brand-navy-800/70">{clientRequest.summary}</p>
+                    <p className="mt-1 text-brand-carbon/70">{clientRequest.summary}</p>
 
                     {clientRequest.status === "submitted" && (
-                      <div className="mt-3 border-t border-brand-navy-900/10 pt-3">
+                      <div className="mt-3 border-t border-brand-carbon/10 pt-3">
                         {openClientRequestId === clientRequest.id ? (
                           <div>
                             <Label htmlFor={`client-request-note-${clientRequest.id}`}>Note (required to decline)</Label>
@@ -489,7 +489,7 @@ export default function ManagerContractDetailPage() {
               className="max-h-[70vh] w-full rounded-md object-contain"
             />
           )}
-          <p className="mt-3 text-sm text-brand-navy-800/70">{viewingProof.completionNote}</p>
+          <p className="mt-3 text-sm text-brand-carbon/70">{viewingProof.completionNote}</p>
         </Modal>
       )}
     </main>

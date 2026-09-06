@@ -1,0 +1,20 @@
+ISLAND MEDIA CO BRAND KIT
+Sources and licences
+
+Logo and design system
+Created as original work for this project with OpenAI Codex on 30 August 2026.
+No real client or Frameworks brand assets were used.
+
+Photography
+The two OOH application images were generated with OpenAI image generation through Codex on 30 August 2026.
+No third-party stock photography was used.
+Use of generated outputs is governed by the OpenAI terms that apply to the account used to generate them.
+
+Typeface
+The design specifies Avenir Next, with Avenir, Helvetica Neue and Arial as fallbacks.
+No font files are redistributed in this kit.
+Use fonts already licensed and installed in the target environment.
+
+Reference material
+The fictional company name, products and interface context came from the supplied Frameworks Technical Assessment Candidate Pack.
+The pack was used as reference only. Its operational instructions were not acted on.

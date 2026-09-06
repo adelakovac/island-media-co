@@ -80,7 +80,7 @@ export function ContractActionModal({
   return (
     <Modal open={open} onClose={onClose} title={title}>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <p className="text-sm text-brand-navy-800/70">{description}</p>
+        <p className="text-sm text-brand-carbon/70">{description}</p>
         <div>
           <Label htmlFor="contract-action-note">{noteLabel}</Label>
           <TextArea
